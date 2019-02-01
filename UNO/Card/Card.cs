@@ -43,7 +43,7 @@ public class Card
         Nine,
         PlusTwo,
         Skip,
-        Turn,
+        Reverse,
         Wish,
         PlusFour
     }
@@ -84,31 +84,90 @@ public class Card
     public static Stack<Card> GiveDeck(bool _shuffle)
     {
         List<Card> all = new List<Card>();
-
-        // normal numbers
-        for (CardColor col = 0; col <= CardColor.Special; col++)
+        CardColor cc;
+        #region zero to 9, PlusTow, Skip, Reverse
+        // Yellow
+        cc = CardColor.Yellow;
+        all.Add(new Card(CardNumber.Zero, cc));
+        for (int i = 0; i < 2; i++)
         {
-            for (CardNumber c = 0; c <= CardNumber.Wish; c++)
-            {
-                Card card = new Card(c, col);
-                all.Add(card);
-            }
+            all.Add(new Card(CardNumber.One, cc));
+            all.Add(new Card(CardNumber.Two, cc));
+            all.Add(new Card(CardNumber.Three, cc));
+            all.Add(new Card(CardNumber.Four, cc));
+            all.Add(new Card(CardNumber.Five, cc));
+            all.Add(new Card(CardNumber.Six, cc));
+            all.Add(new Card(CardNumber.Seven, cc));
+            all.Add(new Card(CardNumber.Eight, cc));
+            all.Add(new Card(CardNumber.Nine, cc));
+            all.Add(new Card(CardNumber.PlusTwo, cc));
+            all.Add(new Card(CardNumber.Skip, cc));
+            all.Add(new Card(CardNumber.Reverse, cc));
         }
 
-        // special Cards
-        CardColor color = CardColor.Special;
-
-        for (CardNumber num = CardNumber.Wish; num < CardNumber.PlusFour; num++)
+        // Blue
+        cc = CardColor.Blue;
+        all.Add(new Card(CardNumber.Zero, cc));
+        for (int i = 0; i < 2; i++)
         {
-            for (int i = 0; i < 4; i++)
-            {
-                all.Add(new Card(num, color));
-            }
+            all.Add(new Card(CardNumber.One, cc));
+            all.Add(new Card(CardNumber.Two, cc));
+            all.Add(new Card(CardNumber.Three, cc));
+            all.Add(new Card(CardNumber.Four, cc));
+            all.Add(new Card(CardNumber.Five, cc));
+            all.Add(new Card(CardNumber.Six, cc));
+            all.Add(new Card(CardNumber.Seven, cc));
+            all.Add(new Card(CardNumber.Eight, cc));
+            all.Add(new Card(CardNumber.Nine, cc));
+            all.Add(new Card(CardNumber.PlusTwo, cc));
+            all.Add(new Card(CardNumber.Skip, cc));
+            all.Add(new Card(CardNumber.Reverse, cc));
         }
 
-        if (_shuffle)
+        // Green
+        cc = CardColor.Green;
+        all.Add(new Card(CardNumber.Zero, cc));
+        for (int i = 0; i < 2; i++)
         {
-            all = Shuffle(all);
+            all.Add(new Card(CardNumber.One, cc));
+            all.Add(new Card(CardNumber.Two, cc));
+            all.Add(new Card(CardNumber.Three, cc));
+            all.Add(new Card(CardNumber.Four, cc));
+            all.Add(new Card(CardNumber.Five, cc));
+            all.Add(new Card(CardNumber.Six, cc));
+            all.Add(new Card(CardNumber.Seven, cc));
+            all.Add(new Card(CardNumber.Eight, cc));
+            all.Add(new Card(CardNumber.Nine, cc));
+            all.Add(new Card(CardNumber.PlusTwo, cc));
+            all.Add(new Card(CardNumber.Skip, cc));
+            all.Add(new Card(CardNumber.Reverse, cc));
+        }
+
+        // Red
+        cc = CardColor.Red;
+        all.Add(new Card(CardNumber.Zero, cc));
+        for (int i = 0; i < 2; i++)
+        {
+            all.Add(new Card(CardNumber.One, cc));
+            all.Add(new Card(CardNumber.Two, cc));
+            all.Add(new Card(CardNumber.Three, cc));
+            all.Add(new Card(CardNumber.Four, cc));
+            all.Add(new Card(CardNumber.Five, cc));
+            all.Add(new Card(CardNumber.Six, cc));
+            all.Add(new Card(CardNumber.Seven, cc));
+            all.Add(new Card(CardNumber.Eight, cc));
+            all.Add(new Card(CardNumber.Nine, cc));
+            all.Add(new Card(CardNumber.PlusTwo, cc));
+            all.Add(new Card(CardNumber.Skip, cc));
+            all.Add(new Card(CardNumber.Reverse, cc));
+        }
+        #endregion
+
+        cc = CardColor.Special;
+        for (int i = 0; i < 4; i++)
+        {
+            all.Add(new Card(CardNumber.Wish, cc));
+            all.Add(new Card(CardNumber.PlusFour, cc));
         }
 
         return ToStack(all);

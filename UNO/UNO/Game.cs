@@ -9,11 +9,9 @@ namespace UNO
     class Game
     {
         Stack<Card> allCards = new Stack<Card>();
-        
         public void StartGame()
         {
-            allCards = Card.GiveDeck(true);
-
+            allCards = Card.GiveDeck(false);
         }
     }
 }
