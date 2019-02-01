@@ -5,6 +5,7 @@ using System.Text;
 
 public class Card
 {
+    public static int DrawStartHand = 7;
     private static Random random = new Random();
 
     /// <summary>
@@ -29,53 +30,49 @@ public class Card
 
 
     #region enum
+    /// <summary>
+    /// Card Value
+    /// </summary>
     public enum CardNumber
     {
-        Zero,
-        One,
-        Two,
-        Three,
-        Four,
-        Five,
-        Six,
-        Seven,
-        Eight,
-        Nine,
-        PlusTwo,
-        Skip,
-        Reverse,
-        Wish,
-        PlusFour
+        ZERO,
+        ONE,
+        TWO,
+        THREE,
+        FOUR,
+        FIVE,
+        SIX,
+        SEVEN,
+        EIGHT,
+        NINE,
+        PLUSTWO,
+        SKIP,
+        REVERSE,
+        WISH,
+        PLUSFOUR
     }
 
-    public enum CardColor { Yellow, Blue, Green, Red, Special }
+    /// <summary>
+    /// Color of Card
+    /// </summary>
+    public enum CardColor { YELLOW, BLUE, GREEN, RED, SPECIAL }
     #endregion
 
-    #region override function
-    public override bool Equals(object obj)
+
+    /// <summary>
+    /// Change Color of card (Only works with SPECIAL, see <see cref="CardColor"/>)
+    /// </summary>
+    /// <param name="_color">new color</param>
+    /// <exception cref="OutOfMemoryException">throw when...</exception>
+    public void ChangeCardColor(CardColor _color)
     {
-        if (this.GetType() != obj.GetType())
-            return false;
-
-        Card other = (Card)obj;
-
-        if (this.color == other.color && this.number == other.number)
-            return true;
-        else
-            return false;
+        if (color == CardColor.SPECIAL)
+        {
+            color = _color;
+        }
     }
 
-    public override int GetHashCode()
-    {
-        return base.GetHashCode();
-    }
-
-    public override string ToString()
-    {
-        return number.ToString() + ", " + color.ToString();
-    }
-    #endregion
-
+    #region static functions
     /// <summary>
     /// Creates a complete Deck
     /// </summary>
@@ -87,88 +84,91 @@ public class Card
         CardColor cc;
         #region zero to 9, PlusTow, Skip, Reverse
         // Yellow
-        cc = CardColor.Yellow;
-        all.Add(new Card(CardNumber.Zero, cc));
+        cc = CardColor.YELLOW;
+        all.Add(new Card(CardNumber.ZERO, cc));
         for (int i = 0; i < 2; i++)
         {
-            all.Add(new Card(CardNumber.One, cc));
-            all.Add(new Card(CardNumber.Two, cc));
-            all.Add(new Card(CardNumber.Three, cc));
-            all.Add(new Card(CardNumber.Four, cc));
-            all.Add(new Card(CardNumber.Five, cc));
-            all.Add(new Card(CardNumber.Six, cc));
-            all.Add(new Card(CardNumber.Seven, cc));
-            all.Add(new Card(CardNumber.Eight, cc));
-            all.Add(new Card(CardNumber.Nine, cc));
-            all.Add(new Card(CardNumber.PlusTwo, cc));
-            all.Add(new Card(CardNumber.Skip, cc));
-            all.Add(new Card(CardNumber.Reverse, cc));
+            all.Add(new Card(CardNumber.ONE, cc));
+            all.Add(new Card(CardNumber.TWO, cc));
+            all.Add(new Card(CardNumber.THREE, cc));
+            all.Add(new Card(CardNumber.FOUR, cc));
+            all.Add(new Card(CardNumber.FIVE, cc));
+            all.Add(new Card(CardNumber.SIX, cc));
+            all.Add(new Card(CardNumber.SEVEN, cc));
+            all.Add(new Card(CardNumber.EIGHT, cc));
+            all.Add(new Card(CardNumber.NINE, cc));
+            all.Add(new Card(CardNumber.PLUSTWO, cc));
+            all.Add(new Card(CardNumber.SKIP, cc));
+            all.Add(new Card(CardNumber.REVERSE, cc));
         }
 
         // Blue
-        cc = CardColor.Blue;
-        all.Add(new Card(CardNumber.Zero, cc));
+        cc = CardColor.BLUE;
+        all.Add(new Card(CardNumber.ZERO, cc));
         for (int i = 0; i < 2; i++)
         {
-            all.Add(new Card(CardNumber.One, cc));
-            all.Add(new Card(CardNumber.Two, cc));
-            all.Add(new Card(CardNumber.Three, cc));
-            all.Add(new Card(CardNumber.Four, cc));
-            all.Add(new Card(CardNumber.Five, cc));
-            all.Add(new Card(CardNumber.Six, cc));
-            all.Add(new Card(CardNumber.Seven, cc));
-            all.Add(new Card(CardNumber.Eight, cc));
-            all.Add(new Card(CardNumber.Nine, cc));
-            all.Add(new Card(CardNumber.PlusTwo, cc));
-            all.Add(new Card(CardNumber.Skip, cc));
-            all.Add(new Card(CardNumber.Reverse, cc));
+            all.Add(new Card(CardNumber.ONE, cc));
+            all.Add(new Card(CardNumber.TWO, cc));
+            all.Add(new Card(CardNumber.THREE, cc));
+            all.Add(new Card(CardNumber.FOUR, cc));
+            all.Add(new Card(CardNumber.FIVE, cc));
+            all.Add(new Card(CardNumber.SIX, cc));
+            all.Add(new Card(CardNumber.SEVEN, cc));
+            all.Add(new Card(CardNumber.EIGHT, cc));
+            all.Add(new Card(CardNumber.NINE, cc));
+            all.Add(new Card(CardNumber.PLUSTWO, cc));
+            all.Add(new Card(CardNumber.SKIP, cc));
+            all.Add(new Card(CardNumber.REVERSE, cc));
         }
 
         // Green
-        cc = CardColor.Green;
-        all.Add(new Card(CardNumber.Zero, cc));
+        cc = CardColor.GREEN;
+        all.Add(new Card(CardNumber.ZERO, cc));
         for (int i = 0; i < 2; i++)
         {
-            all.Add(new Card(CardNumber.One, cc));
-            all.Add(new Card(CardNumber.Two, cc));
-            all.Add(new Card(CardNumber.Three, cc));
-            all.Add(new Card(CardNumber.Four, cc));
-            all.Add(new Card(CardNumber.Five, cc));
-            all.Add(new Card(CardNumber.Six, cc));
-            all.Add(new Card(CardNumber.Seven, cc));
-            all.Add(new Card(CardNumber.Eight, cc));
-            all.Add(new Card(CardNumber.Nine, cc));
-            all.Add(new Card(CardNumber.PlusTwo, cc));
-            all.Add(new Card(CardNumber.Skip, cc));
-            all.Add(new Card(CardNumber.Reverse, cc));
+            all.Add(new Card(CardNumber.ONE, cc));
+            all.Add(new Card(CardNumber.TWO, cc));
+            all.Add(new Card(CardNumber.THREE, cc));
+            all.Add(new Card(CardNumber.FOUR, cc));
+            all.Add(new Card(CardNumber.FIVE, cc));
+            all.Add(new Card(CardNumber.SIX, cc));
+            all.Add(new Card(CardNumber.SEVEN, cc));
+            all.Add(new Card(CardNumber.EIGHT, cc));
+            all.Add(new Card(CardNumber.NINE, cc));
+            all.Add(new Card(CardNumber.PLUSTWO, cc));
+            all.Add(new Card(CardNumber.SKIP, cc));
+            all.Add(new Card(CardNumber.REVERSE, cc));
         }
 
         // Red
-        cc = CardColor.Red;
-        all.Add(new Card(CardNumber.Zero, cc));
+        cc = CardColor.RED;
+        all.Add(new Card(CardNumber.ZERO, cc));
         for (int i = 0; i < 2; i++)
         {
-            all.Add(new Card(CardNumber.One, cc));
-            all.Add(new Card(CardNumber.Two, cc));
-            all.Add(new Card(CardNumber.Three, cc));
-            all.Add(new Card(CardNumber.Four, cc));
-            all.Add(new Card(CardNumber.Five, cc));
-            all.Add(new Card(CardNumber.Six, cc));
-            all.Add(new Card(CardNumber.Seven, cc));
-            all.Add(new Card(CardNumber.Eight, cc));
-            all.Add(new Card(CardNumber.Nine, cc));
-            all.Add(new Card(CardNumber.PlusTwo, cc));
-            all.Add(new Card(CardNumber.Skip, cc));
-            all.Add(new Card(CardNumber.Reverse, cc));
+            all.Add(new Card(CardNumber.ONE, cc));
+            all.Add(new Card(CardNumber.TWO, cc));
+            all.Add(new Card(CardNumber.THREE, cc));
+            all.Add(new Card(CardNumber.FOUR, cc));
+            all.Add(new Card(CardNumber.FIVE, cc));
+            all.Add(new Card(CardNumber.SIX, cc));
+            all.Add(new Card(CardNumber.SEVEN, cc));
+            all.Add(new Card(CardNumber.EIGHT, cc));
+            all.Add(new Card(CardNumber.NINE, cc));
+            all.Add(new Card(CardNumber.PLUSTWO, cc));
+            all.Add(new Card(CardNumber.SKIP, cc));
+            all.Add(new Card(CardNumber.REVERSE, cc));
         }
         #endregion
 
-        cc = CardColor.Special;
+        cc = CardColor.SPECIAL;
         for (int i = 0; i < 4; i++)
         {
-            all.Add(new Card(CardNumber.Wish, cc));
-            all.Add(new Card(CardNumber.PlusFour, cc));
+            all.Add(new Card(CardNumber.WISH, cc));
+            all.Add(new Card(CardNumber.PLUSFOUR, cc));
         }
+
+        if (_shuffle)
+            all = Shuffle(all);
 
         return ToStack(all);
     }
@@ -238,5 +238,100 @@ public class Card
             toReturn.Push(c);
         }
         return toReturn;
+    }
+
+    /// <summary>
+    /// Gives each player start cards. See <b><see cref="DrawStartHand"/></b> for Value
+    /// </summary>
+    /// <param name="_cardDeck">current deck with cards</param>
+    /// <param name="_player">all player</param>
+    public static void GiveCards(Stack<Card> _cardDeck, params Player[] _player)
+    {
+        for (int draw = 0; draw < DrawStartHand; draw++)
+        {
+            for (int player = 0; player < _player.Length; player++)
+            {
+                _player[player].CardHand.Add(_cardDeck.Pop());
+            }
+        }
+    }
+    #endregion
+
+    #region override function
+    public override bool Equals(object obj)
+    {
+        if (this.GetType() != obj.GetType())
+            return false;
+
+        Card other = (Card)obj;
+
+        if (this.color == other.color && this.number == other.number)
+            return true;
+        else
+            return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        return color.ToString() + " " + number.ToString();
+    }
+    #endregion
+
+}
+
+public class Player
+{
+    /// <summary>Player Number</summary>
+    private int playerNumber;
+    /// <summary>Cards in his hand</summary>
+    private List<Card> cardHand = new List<Card>();
+
+    #region Properties
+    /// <summary>Player Number</summary>
+    public int PlayerNumber { get { return playerNumber; } }
+    /// <summary>Cards in his hand</summary>
+    public List<Card> CardHand { get { return cardHand; } }
+    #endregion
+
+    #region Constructor
+    /// <summary>
+    /// A new Player
+    /// </summary>
+    /// <param name="_playerNumber">Player Number</param>
+    public Player(int _playerNumber)
+    {
+        playerNumber = _playerNumber;
+    }
+    /// <summary>
+    /// A new Player
+    /// </summary>
+    /// <param name="_playerNumber">Player Number</param>
+    /// <param name="_cardHand">Cards on his hand</param>
+    public Player(int _playerNumber, List<Card> _cardHand)
+    {
+        playerNumber = _playerNumber;
+        cardHand = _cardHand;
+    }
+    #endregion
+
+    public override bool Equals(object obj)
+    {
+        return base.Equals(obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        string s = "Player " + PlayerNumber + " with " + CardHand.Count + " Cards";
+        return s;
     }
 }
