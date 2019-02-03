@@ -63,7 +63,6 @@ public class Card
     /// Change Color of card (Only works with SPECIAL, see <see cref="CardColor"/>)
     /// </summary>
     /// <param name="_color">new color</param>
-    /// <exception cref="OutOfMemoryException">throw when...</exception>
     public void ChangeCardColor(CardColor _color)
     {
         if (color == CardColor.SPECIAL)
@@ -321,7 +320,13 @@ public class Player
 
     public override bool Equals(object obj)
     {
-        return base.Equals(obj);
+        if (obj.GetType() != this.GetType())
+            return false;
+        Player other = (Player)obj;
+        if (this.PlayerNumber == other.playerNumber)
+            return true;
+        else
+            return false;
     }
 
     public override int GetHashCode()
