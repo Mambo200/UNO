@@ -135,6 +135,7 @@ namespace UNO
                 work = int.TryParse(input, out cardChosen);
 
                 // check if input was a number
+                #region input check
                 // input was not a number
                 if (!work)
                 {
@@ -155,6 +156,7 @@ namespace UNO
                         work = false;
                     }
                 }
+                #endregion
 
                 // check if cards can be used
                 if (!draw)
@@ -211,6 +213,12 @@ namespace UNO
 
                 // remove card from player hand
                 currentPlayer.CardHand.Remove(LastPlayedCard);
+
+                // skip next player
+                if (LastPlayedCard.Number == Card.CardNumber.SKIP)
+                {
+                    NextPlayer();
+                }
             }
 
         }
@@ -275,7 +283,6 @@ namespace UNO
         private void ChangeColorSpecialCard(int _cardChosen)
         {
 
-            int chosenColor;
             bool work = false;
 
             // choose card
@@ -287,7 +294,7 @@ namespace UNO
                 Console.WriteLine("2:\t" + Card.CardColor.BLUE);
                 Console.WriteLine("3:\t" + Card.CardColor.GREEN);
                 Console.WriteLine("4:\t" + Card.CardColor.RED);
-                int.TryParse(Console.ReadLine(), out chosenColor);
+                int.TryParse(Console.ReadLine(), out int chosenColor);
 
                 switch (chosenColor)
                 {
@@ -320,7 +327,6 @@ namespace UNO
         private void ChangeColorSpecialCard()
         {
 
-            int chosenColor;
             bool work = false;
 
             // choose card
@@ -332,7 +338,7 @@ namespace UNO
                 Console.WriteLine("2:\t" + Card.CardColor.BLUE);
                 Console.WriteLine("3:\t" + Card.CardColor.GREEN);
                 Console.WriteLine("4:\t" + Card.CardColor.RED);
-                int.TryParse(Console.ReadLine(), out chosenColor);
+                int.TryParse(Console.ReadLine(), out int chosenColor);
 
                 switch (chosenColor)
                 {
