@@ -5,7 +5,7 @@ using System.Text;
 
 public class Card
 {
-    public static int DrawStartHand = 7;
+    public static int DrawStartHand { get { return 7; } }
     private static Random random = new Random();
 
     /// <summary>
@@ -72,6 +72,22 @@ public class Card
     }
 
     #region static functions
+    /// <summary>
+    /// Return a Card with <see cref="CardColor"/>.SPECIAL when <see cref="CardNumber"/> = <see cref="CardNumber"/>.PLUSFOUR or .WISH
+    /// </summary>
+    /// <param name="_number">Number of new Card</param>
+    /// <returns>new Card with <see cref="CardColor"/>.SPECIAL, if <see cref="CardNumber"/> not PLUSFOUR or WISH return null</returns>
+    public static Card GetSpecial(CardNumber _number)
+    {
+        if (_number == CardNumber.PLUSFOUR ||
+            _number == CardNumber.WISH)
+        {
+            return new Card(_number, CardColor.SPECIAL);
+        }
+        else
+            return null;
+    }
+
     /// <summary>
     /// Creates a complete Deck
     /// </summary>
@@ -318,6 +334,7 @@ public class Player
     }
     #endregion
 
+    #region override
     public override bool Equals(object obj)
     {
         if (obj.GetType() != this.GetType())
@@ -339,4 +356,5 @@ public class Player
         string s = "Player " + PlayerNumber + " with " + CardHand.Count + " Cards";
         return s;
     }
+    #endregion
 }

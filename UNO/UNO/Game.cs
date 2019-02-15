@@ -12,7 +12,7 @@ namespace UNO
         bool reverse = false;
         public static Card LastPlayedCard;
         Stack<Card> allCards = new Stack<Card>();
-        Player[] players = new Player[2];
+        Player[] players = new Player[5];
         public Player currentPlayer;
 
         // Win Variables
@@ -43,6 +43,7 @@ namespace UNO
 
             // current player draw card if last card was Special
             DrawFromSpecial();
+
 
             // actual Game
             DoTurn();
@@ -219,6 +220,10 @@ namespace UNO
                 {
                     NextPlayer();
                 }
+                if (LastPlayedCard.Number == Card.CardNumber.REVERSE)
+                {
+                    reverse = !reverse;
+                }
             }
 
         }
@@ -393,6 +398,10 @@ namespace UNO
 
             switch (LastPlayedCard.Number)
             {
+                case Card.CardNumber.REVERSE:
+                    NextPlayer();
+                    drawCard = false;
+                    break;
                 case Card.CardNumber.WISH:
                     ChangeColorSpecialCard();
                     drawCard = false;
