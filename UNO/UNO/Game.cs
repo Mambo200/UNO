@@ -12,7 +12,7 @@ namespace UNO
         bool reverse = false;
         public static Card LastPlayedCard;
         Stack<Card> allCards = new Stack<Card>();
-        Player[] players = new Player[5];
+        Player[] players;
         public Player currentPlayer;
 
         // Win Variables
@@ -25,6 +25,21 @@ namespace UNO
         /// </summary>
         public void StartGame()
         {
+            // playercount
+            int playerCount = 0;
+            do
+            {
+                Console.Write("How many Players? ");
+                int.TryParse(Console.ReadLine(), out playerCount);
+
+                if (playerCount <= 0)
+                {
+                    Console.Clear();
+                }
+            } while (playerCount <= 0);
+
+            players = new Player[playerCount];
+
             // generate Player
             for (int i = 0; i < players.Length; i++)
             {
