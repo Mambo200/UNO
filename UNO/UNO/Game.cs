@@ -91,6 +91,7 @@ namespace UNO
                 // show cards of current player
                 ShowCurrentPlayersCards(true);
 
+                OtherPlayerCardCount();
 
                 // let player choose a card to play
                 ChooseCard();
@@ -101,6 +102,26 @@ namespace UNO
                 // switch to next player
                 NextPlayer();
             }
+        }
+
+        /// <summary>
+        /// Show other player card count
+        /// </summary>
+        private void OtherPlayerCardCount()
+        {
+            string message = "";
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i] == currentPlayer)
+                {
+                    message += "Player " + currentPlayer.PlayerNumber + " (You):\t" + currentPlayer.CardHand.Count + "\n";
+                }
+                else
+                {
+                    message += "Player " + players[i].PlayerNumber + ":\t" + players[i].CardHand.Count + "\n";
+                }
+            }
+            Console.WriteLine(message);
         }
 
         /// <summary>
