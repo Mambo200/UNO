@@ -49,7 +49,9 @@ public class Card
         SKIP,
         REVERSE,
         WISH,
-        PLUSFOUR
+        PLUSFOUR,
+
+        MAX
     }
 
     /// <summary>
@@ -102,82 +104,35 @@ public class Card
         cc = CardColor.YELLOW;
         all.Add(new Card(CardNumber.ZERO, cc));
         for (int i = 0; i < 2; i++)
-        {
-            all.Add(new Card(CardNumber.ONE, cc));
-            all.Add(new Card(CardNumber.TWO, cc));
-            all.Add(new Card(CardNumber.THREE, cc));
-            all.Add(new Card(CardNumber.FOUR, cc));
-            all.Add(new Card(CardNumber.FIVE, cc));
-            all.Add(new Card(CardNumber.SIX, cc));
-            all.Add(new Card(CardNumber.SEVEN, cc));
-            all.Add(new Card(CardNumber.EIGHT, cc));
-            all.Add(new Card(CardNumber.NINE, cc));
-            all.Add(new Card(CardNumber.PLUSTWO, cc));
-            all.Add(new Card(CardNumber.SKIP, cc));
-            all.Add(new Card(CardNumber.REVERSE, cc));
-        }
+            for (int y = 1; y < (int)CardNumber.WISH; y++)
+                all.Add(new Card((CardNumber)y, cc));
 
         // Blue
         cc = CardColor.BLUE;
         all.Add(new Card(CardNumber.ZERO, cc));
         for (int i = 0; i < 2; i++)
-        {
-            all.Add(new Card(CardNumber.ONE, cc));
-            all.Add(new Card(CardNumber.TWO, cc));
-            all.Add(new Card(CardNumber.THREE, cc));
-            all.Add(new Card(CardNumber.FOUR, cc));
-            all.Add(new Card(CardNumber.FIVE, cc));
-            all.Add(new Card(CardNumber.SIX, cc));
-            all.Add(new Card(CardNumber.SEVEN, cc));
-            all.Add(new Card(CardNumber.EIGHT, cc));
-            all.Add(new Card(CardNumber.NINE, cc));
-            all.Add(new Card(CardNumber.PLUSTWO, cc));
-            all.Add(new Card(CardNumber.SKIP, cc));
-            all.Add(new Card(CardNumber.REVERSE, cc));
-        }
+            for (int y = 1; y < (int)CardNumber.WISH; y++)
+                all.Add(new Card((CardNumber)y, cc));
 
         // Green
         cc = CardColor.GREEN;
         all.Add(new Card(CardNumber.ZERO, cc));
         for (int i = 0; i < 2; i++)
-        {
-            all.Add(new Card(CardNumber.ONE, cc));
-            all.Add(new Card(CardNumber.TWO, cc));
-            all.Add(new Card(CardNumber.THREE, cc));
-            all.Add(new Card(CardNumber.FOUR, cc));
-            all.Add(new Card(CardNumber.FIVE, cc));
-            all.Add(new Card(CardNumber.SIX, cc));
-            all.Add(new Card(CardNumber.SEVEN, cc));
-            all.Add(new Card(CardNumber.EIGHT, cc));
-            all.Add(new Card(CardNumber.NINE, cc));
-            all.Add(new Card(CardNumber.PLUSTWO, cc));
-            all.Add(new Card(CardNumber.SKIP, cc));
-            all.Add(new Card(CardNumber.REVERSE, cc));
-        }
+            for (int y = 1; y < (int)CardNumber.WISH; y++)
+                all.Add(new Card((CardNumber)y, cc));
 
         // Red
         cc = CardColor.RED;
         all.Add(new Card(CardNumber.ZERO, cc));
         for (int i = 0; i < 2; i++)
-        {
-            all.Add(new Card(CardNumber.ONE, cc));
-            all.Add(new Card(CardNumber.TWO, cc));
-            all.Add(new Card(CardNumber.THREE, cc));
-            all.Add(new Card(CardNumber.FOUR, cc));
-            all.Add(new Card(CardNumber.FIVE, cc));
-            all.Add(new Card(CardNumber.SIX, cc));
-            all.Add(new Card(CardNumber.SEVEN, cc));
-            all.Add(new Card(CardNumber.EIGHT, cc));
-            all.Add(new Card(CardNumber.NINE, cc));
-            all.Add(new Card(CardNumber.PLUSTWO, cc));
-            all.Add(new Card(CardNumber.SKIP, cc));
-            all.Add(new Card(CardNumber.REVERSE, cc));
-        }
-        #endregion
+            for (int y = 1; y < (int)CardNumber.WISH; y++)
+                all.Add(new Card((CardNumber)y, cc));
+                #endregion
 
         cc = CardColor.SPECIAL;
         for (int i = 0; i < 4; i++)
         {
+
             all.Add(new Card(CardNumber.WISH, cc));
             all.Add(new Card(CardNumber.PLUSFOUR, cc));
         }

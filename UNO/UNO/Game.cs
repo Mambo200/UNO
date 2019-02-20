@@ -435,7 +435,7 @@ namespace UNO
             switch (LastPlayedCard.Number)
             {
                 case Card.CardNumber.REVERSE:
-                    NextPlayer();
+                    reverse = !reverse;
                     drawCard = false;
                     break;
                 case Card.CardNumber.WISH:
