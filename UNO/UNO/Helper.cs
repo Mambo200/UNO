@@ -29,13 +29,22 @@ namespace UNO
                 // check new name
                 Console.WriteLine($"Is {newName} the name you wanted?\nY/N");
                 ConsoleKeyInfo key = Console.ReadKey();
-                if (key.KeyChar == 'y' || key.KeyChar == 'Y')
+                if (key.Key == ConsoleKey.Y || key.Key == ConsoleKey.Enter)
                     work = true;
                 else
                     work = false;
             } while (!work);
 
             _player.PlayerName = newName;
+        }
+
+        public static void WriteWinners(Player[] _allPlayers)
+        {
+            //Console.Clear();
+            //Console.ForegroundColor = ConsoleColor.Yellow;
+            //Console.WriteLine("{0} won!", hasWon.PlayerName.ToString());
+            //Console.ReadKey();
+            //Console.ResetColor();
         }
 
         private static string GetFirstLetters(string _word, int _charCount)
@@ -53,6 +62,15 @@ namespace UNO
             }
 
             return toReturn;
+        }
+
+        private static Player[] SortByWinner(Player[] _allPlayers)
+        {
+            Player[] arrayToReturn = new Player[_allPlayers.Length];
+
+
+
+            return arrayToReturn;
         }
     }
 }

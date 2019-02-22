@@ -5,7 +5,8 @@ using System.Text;
 
 public class Card
 {
-    public static int DrawStartHand { get { return 7; } }
+    private static int drawStartHand = 7;
+    public static int DrawStartHand { get { return drawStartHand; } set { drawStartHand = value; } }
     private static Random random = new Random();
 
     /// <summary>
@@ -217,6 +218,7 @@ public class Card
     /// <param name="_player">all player</param>
     public static void GiveCards(Stack<Card> _cardDeck, params Player[] _player)
     {
+        // per Card (every Player get one card, the every player get the second card and so on)
         for (int draw = 0; draw < DrawStartHand; draw++)
         {
             for (int player = 0; player < _player.Length; player++)
