@@ -50,7 +50,9 @@ namespace UNO
                 Helper.SetName(players[i]);
             }
             allCards = Card.GiveDeck(true);
-
+#if DEBUG
+            Card.DrawStartHand = 5;
+#endif
             // give cards to player
             Card.GiveCards(allCards, players);
 
@@ -61,7 +63,7 @@ namespace UNO
             SetCurrentPlayer(0);
 
             // current player draw card if last card was Special
-            DrawFromSpecial();
+            DrawFromSpecial(true);
 
 
             // actual Game
@@ -170,7 +172,7 @@ namespace UNO
             int cardChosen = -1;
             string input = "";
             bool work = false;
-            bool draw = false;
+            bool drawFromDeck = false;
 
             // try input as long as there is a correct input
             do
@@ -196,19 +198,20 @@ namespace UNO
                     // if player choose to draw a card
                     if (cardChosen == currentPlayer.CardHand.Count)
                     {
-                        draw = true;
+                        drawFromDeck = true;
                     }
                     // check if number is valid
                     else if (cardChosen < 0 || cardChosen >= currentPlayer.CardHand.Count)
                     {
                         Console.WriteLine("\n{0} was too high / too low.", input);
                         work = false;
+                        drawFromDeck = true;
                     }
                 }
                 #endregion
 
                 // check if cards can be used
-                if (!draw)
+                if (!drawFromDeck)
                 {
                     Card pickedCard = currentPlayer.CardHand[cardChosen];
 
@@ -246,11 +249,13 @@ namespace UNO
                     }
                 }
 
+
+
                 ShowCurrentPlayersCards(true);
             } while (!work);
 
             
-            if (draw)
+            if (drawFromDeck)
             {
                 // player draws a card
                 DrawCards();
@@ -272,10 +277,18 @@ namespace UNO
                 {
                     reverse = !reverse;
                 }
+                if (LastPlayedCard.Number == Card.CardNumber.PLUSTWO
+                    || LastPlayedCard.Number == Card.CardNumber.PLUSFOUR)
+                {
+                    drawCard = true;
+                }
             }
 
         }
 
+        /// <summary>
+        /// Set current player to next player
+        /// </summary>
         private void NextPlayer()
         {
             int playerNumber = -1;
@@ -288,28 +301,39 @@ namespace UNO
                 }
             }
 
-            // go in the opposite direction if reverse is true
-            if (reverse)
+            bool alreadyWon = true;
+            // if next player already won do again
+            do
             {
-                playerNumber -= 1;
-                // check if playernumber is below 0
-                if (playerNumber < 0)
+                // go in the opposite direction if reverse is true
+                if (reverse)
                 {
-                    playerNumber = players.Length - 1;
+                    playerNumber -= 1;
+                    // check if playernumber is below 0
+                    if (playerNumber < 0)
+                    {
+                        playerNumber = players.Length - 1;
+                    }
                 }
-            }
-            else
-            {
-                playerNumber += 1;
-                // check if playernumber is above maximum
-                if (playerNumber >= players.Length)
+                else
                 {
-                    playerNumber = 0;
+                    playerNumber += 1;
+                    // check if playernumber is above maximum
+                    if (playerNumber >= players.Length)
+                    {
+                        playerNumber = 0;
+                    }
                 }
-            }
 
             // set current player
             SetCurrentPlayer(playerNumber);
+
+                if (currentPlayer.winnerRank == 0)
+                    alreadyWon = false;
+                else
+                    alreadyWon = true;
+
+            } while (alreadyWon);
         }
 
         private void SetCurrentPlayer(int _playerInArray)
@@ -327,6 +351,11 @@ namespace UNO
                 currentPlayer.winnerRank = nextPlayerRank;
                 nextPlayerRank++;
                 hasWon = currentPlayer;
+
+            }
+            if (nextPlayerRank == players.Length)
+            {
+                inProgress = false;
             }
         }
 
@@ -439,7 +468,7 @@ namespace UNO
         /// <summary>
         /// Draw a card from Deck if last played card was a special card (PlusFour, PlusTwo, Skip)
         /// </summary>
-        private void DrawFromSpecial()
+        private void DrawFromSpecial(bool _start = false)
         {
             // if no special card was played last round
             if (drawCard == false)
@@ -449,29 +478,28 @@ namespace UNO
             {
                 case Card.CardNumber.REVERSE:
                     reverse = !reverse;
-                    drawCard = false;
                     break;
                 case Card.CardNumber.WISH:
                     ChangeColorSpecialCard();
-                    drawCard = false;
                     break;
                 case Card.CardNumber.SKIP:
                     NextPlayer();
-                    drawCard = false;
                     break;
                 case Card.CardNumber.PLUSTWO:
                     DrawCards(2);
-                    drawCard = false;
                     break;
                 case Card.CardNumber.PLUSFOUR:
                     DrawCards(4);
-                    ChangeColorSpecialCard();
-                    drawCard = false;
+                    if (_start)
+                    {
+                        ChangeColorSpecialCard();
+                    }
                     break;
                 default:
-                    drawCard = false;
                     break;
             }
+
+            drawCard = false;
         }
     }
 }

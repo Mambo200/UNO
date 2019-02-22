@@ -29,7 +29,7 @@ namespace UNO
                 // check new name
                 Console.WriteLine($"Is {newName} the name you wanted?\nY/N");
                 ConsoleKeyInfo key = Console.ReadKey();
-                if (key.KeyChar == 'y' || key.KeyChar == 'Y')
+                if (key.Key == ConsoleKey.Y || key.Key == ConsoleKey.Enter)
                     work = true;
                 else
                     work = false;
