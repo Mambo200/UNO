@@ -40,11 +40,32 @@ namespace UNO
 
         public static void WriteWinners(Player[] _allPlayers)
         {
-            //Console.Clear();
-            //Console.ForegroundColor = ConsoleColor.Yellow;
-            //Console.WriteLine("{0} won!", hasWon.PlayerName.ToString());
-            //Console.ReadKey();
-            //Console.ResetColor();
+            Console.Clear();
+
+            // get player sorted by winner rank
+            Player[] listedPlayers = SortByWinner(_allPlayers);
+
+            // write winners to console
+            for (int i = 0; i < listedPlayers.Length; i++)
+            {
+                // change Color
+                switch (i)
+                {
+                    case 0: // #1
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        break;
+                    case 1: // #2
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        break;
+                    default: // else
+                        break;
+                }
+                // text to console
+                Console.WriteLine($"#{i + 1}: {listedPlayers[i].PlayerName}");
+            }
+
+            Console.ReadKey();
+            Console.ResetColor();
         }
 
         private static string GetFirstLetters(string _word, int _charCount)
@@ -68,7 +89,20 @@ namespace UNO
         {
             Player[] arrayToReturn = new Player[_allPlayers.Length];
 
-
+            for (int i = 0; i < _allPlayers.Length; i++)
+            {
+                // get rank
+                int rank = _allPlayers[i].winnerRank;
+                // write player to array
+                if (rank == 0)
+                {
+                    arrayToReturn[_allPlayers.Length - 1] = _allPlayers[i];
+                }
+                else
+                {
+                    arrayToReturn[rank - 1] = _allPlayers[i];
+                }
+            }
 
             return arrayToReturn;
         }

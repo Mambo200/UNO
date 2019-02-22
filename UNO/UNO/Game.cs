@@ -20,6 +20,7 @@ namespace UNO
         private bool inProgress = true;
         private Player hasWon = null;
         private bool drawCard = true;
+        private bool skipPlayer = false;
 
         /// <summary>
         /// Start the Game
@@ -51,7 +52,7 @@ namespace UNO
             }
             allCards = Card.GiveDeck(true);
 #if DEBUG
-            Card.DrawStartHand = 5;
+            Card.DrawStartHand = 1;
 #endif
             // give cards to player
             Card.GiveCards(allCards, players);
@@ -97,6 +98,12 @@ namespace UNO
 
                 // check if someone has won
                 GameWon();
+
+                if (skipPlayer)
+                    NextPlayer();
+
+                // reset skip player
+                skipPlayer = false;
 
                 // switch to next player
                 NextPlayer();
@@ -266,7 +273,7 @@ namespace UNO
                 // skip next player
                 if (LastPlayedCard.Number == Card.CardNumber.SKIP)
                 {
-                    NextPlayer();
+                    skipPlayer = true;
                 }
                 if (LastPlayedCard.Number == Card.CardNumber.REVERSE)
                 {
