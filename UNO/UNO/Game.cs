@@ -70,13 +70,8 @@ namespace UNO
             DoTurn();
 
             // Winner text
-            {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("{0} won!", hasWon.PlayerName.ToString());
-                Console.ReadKey();
-                Console.ResetColor();
-            }
+            Helper.WriteWinners(players);
+
 
         }
 

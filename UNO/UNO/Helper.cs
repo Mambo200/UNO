@@ -38,6 +38,15 @@ namespace UNO
             _player.PlayerName = newName;
         }
 
+        public static void WriteWinners(Player[] _allPlayers)
+        {
+            //Console.Clear();
+            //Console.ForegroundColor = ConsoleColor.Yellow;
+            //Console.WriteLine("{0} won!", hasWon.PlayerName.ToString());
+            //Console.ReadKey();
+            //Console.ResetColor();
+        }
+
         private static string GetFirstLetters(string _word, int _charCount)
         {
             string toReturn = "";
@@ -53,6 +62,15 @@ namespace UNO
             }
 
             return toReturn;
+        }
+
+        private static Player[] SortByWinner(Player[] _allPlayers)
+        {
+            Player[] arrayToReturn = new Player[_allPlayers.Length];
+
+
+
+            return arrayToReturn;
         }
     }
 }
