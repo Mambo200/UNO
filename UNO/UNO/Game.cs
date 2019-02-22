@@ -8,6 +8,7 @@ namespace UNO
 {
     class Game
     {
+        private int nextPlayerRank = 1;
         /// <summary>when reverse card was player</summary>
         bool reverse = false;
         public static Card LastPlayedCard;
@@ -19,6 +20,7 @@ namespace UNO
         private bool inProgress = true;
         private Player hasWon = null;
         private bool drawCard = true;
+        private bool skipPlayer = false;
 
         /// <summary>
         /// Start the Game
@@ -40,13 +42,18 @@ namespace UNO
 
             players = new Player[playerCount];
 
-            // generate Player
+            // generate Player and set name
             for (int i = 0; i < players.Length; i++)
             {
+                // new Player
                 players[i] = new Player(i + 1);
+                // set name
+                Helper.SetName(players[i]);
             }
             allCards = Card.GiveDeck(true);
-
+#if DEBUG
+            Card.DrawStartHand = 1;
+#endif
             // give cards to player
             Card.GiveCards(allCards, players);
 
@@ -57,20 +64,15 @@ namespace UNO
             SetCurrentPlayer(0);
 
             // current player draw card if last card was Special
-            DrawFromSpecial();
+            DrawFromSpecial(true);
 
 
             // actual Game
             DoTurn();
 
             // Winner text
-            {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Player {0} won!", hasWon.PlayerNumber.ToString());
-                Console.ReadKey();
-                Console.ResetColor();
-            }
+            Helper.WriteWinners(players);
+
 
         }
 
@@ -91,13 +93,17 @@ namespace UNO
                 // show cards of current player
                 ShowCurrentPlayersCards(true);
 
-                OtherPlayerCardCount();
-
                 // let player choose a card to play
                 ChooseCard();
 
                 // check if someone has won
                 GameWon();
+
+                if (skipPlayer)
+                    NextPlayer();
+
+                // reset skip player
+                skipPlayer = false;
 
                 // switch to next player
                 NextPlayer();
@@ -114,11 +120,11 @@ namespace UNO
             {
                 if (players[i] == currentPlayer)
                 {
-                    message += "Player " + currentPlayer.PlayerNumber + " (You):\t" + currentPlayer.CardHand.Count + "\n";
+                    message += currentPlayer.PlayerName + " (You):\t" + currentPlayer.CardHand.Count + "\n";
                 }
                 else
                 {
-                    message += "Player " + players[i].PlayerNumber + ":\t" + players[i].CardHand.Count + "\n";
+                    message += players[i].PlayerName + ":\t" + players[i].CardHand.Count + "\n";
                 }
             }
             Console.WriteLine(message);
@@ -130,10 +136,9 @@ namespace UNO
         private void ShowCurrentPlayersCards(bool _showDrawACard)
         {
             Console.WriteLine("Press any key...");
-            //Console.ReadKey();
             Console.Clear();
 
-            string s = currentPlayer.ToString() + "\n";
+            string s = currentPlayer.PlayerWithCard() + "\n";
             Console.WriteLine(s);
 
             int count = -1;
@@ -150,6 +155,17 @@ namespace UNO
 
             }
 
+            // show last played card on field
+            ShowLastPlayedCard();
+
+            Console.WriteLine();
+            // show other players card count
+            OtherPlayerCardCount();
+
+        }
+
+        private static void ShowLastPlayedCard()
+        {
             Console.WriteLine("\nOn Field: " + LastPlayedCard + "\n\n");
         }
 
@@ -158,7 +174,7 @@ namespace UNO
             int cardChosen = -1;
             string input = "";
             bool work = false;
-            bool draw = false;
+            bool drawFromDeck = false;
 
             // try input as long as there is a correct input
             do
@@ -184,19 +200,20 @@ namespace UNO
                     // if player choose to draw a card
                     if (cardChosen == currentPlayer.CardHand.Count)
                     {
-                        draw = true;
+                        drawFromDeck = true;
                     }
                     // check if number is valid
                     else if (cardChosen < 0 || cardChosen >= currentPlayer.CardHand.Count)
                     {
                         Console.WriteLine("\n{0} was too high / too low.", input);
                         work = false;
+                        drawFromDeck = true;
                     }
                 }
                 #endregion
 
                 // check if cards can be used
-                if (!draw)
+                if (!drawFromDeck)
                 {
                     Card pickedCard = currentPlayer.CardHand[cardChosen];
 
@@ -234,11 +251,13 @@ namespace UNO
                     }
                 }
 
+
+
                 ShowCurrentPlayersCards(true);
             } while (!work);
 
             
-            if (draw)
+            if (drawFromDeck)
             {
                 // player draws a card
                 DrawCards();
@@ -254,16 +273,24 @@ namespace UNO
                 // skip next player
                 if (LastPlayedCard.Number == Card.CardNumber.SKIP)
                 {
-                    NextPlayer();
+                    skipPlayer = true;
                 }
                 if (LastPlayedCard.Number == Card.CardNumber.REVERSE)
                 {
                     reverse = !reverse;
                 }
+                if (LastPlayedCard.Number == Card.CardNumber.PLUSTWO
+                    || LastPlayedCard.Number == Card.CardNumber.PLUSFOUR)
+                {
+                    drawCard = true;
+                }
             }
 
         }
 
+        /// <summary>
+        /// Set current player to next player
+        /// </summary>
         private void NextPlayer()
         {
             int playerNumber = -1;
@@ -276,28 +303,39 @@ namespace UNO
                 }
             }
 
-            // go in the opposite direction if reverse is true
-            if (reverse)
+            bool alreadyWon = true;
+            // if next player already won do again
+            do
             {
-                playerNumber -= 1;
-                // check if playernumber is below 0
-                if (playerNumber < 0)
+                // go in the opposite direction if reverse is true
+                if (reverse)
                 {
-                    playerNumber = players.Length - 1;
+                    playerNumber -= 1;
+                    // check if playernumber is below 0
+                    if (playerNumber < 0)
+                    {
+                        playerNumber = players.Length - 1;
+                    }
                 }
-            }
-            else
-            {
-                playerNumber += 1;
-                // check if playernumber is above maximum
-                if (playerNumber >= players.Length)
+                else
                 {
-                    playerNumber = 0;
+                    playerNumber += 1;
+                    // check if playernumber is above maximum
+                    if (playerNumber >= players.Length)
+                    {
+                        playerNumber = 0;
+                    }
                 }
-            }
 
             // set current player
             SetCurrentPlayer(playerNumber);
+
+                if (currentPlayer.winnerRank == 0)
+                    alreadyWon = false;
+                else
+                    alreadyWon = true;
+
+            } while (alreadyWon);
         }
 
         private void SetCurrentPlayer(int _playerInArray)
@@ -312,8 +350,14 @@ namespace UNO
         {
             if (currentPlayer.CardHand.Count == 0)
             {
-                inProgress = false;
+                currentPlayer.winnerRank = nextPlayerRank;
+                nextPlayerRank++;
                 hasWon = currentPlayer;
+
+            }
+            if (nextPlayerRank == players.Length)
+            {
+                inProgress = false;
             }
         }
 
@@ -426,7 +470,7 @@ namespace UNO
         /// <summary>
         /// Draw a card from Deck if last played card was a special card (PlusFour, PlusTwo, Skip)
         /// </summary>
-        private void DrawFromSpecial()
+        private void DrawFromSpecial(bool _start = false)
         {
             // if no special card was played last round
             if (drawCard == false)
@@ -436,29 +480,28 @@ namespace UNO
             {
                 case Card.CardNumber.REVERSE:
                     reverse = !reverse;
-                    drawCard = false;
                     break;
                 case Card.CardNumber.WISH:
                     ChangeColorSpecialCard();
-                    drawCard = false;
                     break;
                 case Card.CardNumber.SKIP:
                     NextPlayer();
-                    drawCard = false;
                     break;
                 case Card.CardNumber.PLUSTWO:
                     DrawCards(2);
-                    drawCard = false;
                     break;
                 case Card.CardNumber.PLUSFOUR:
                     DrawCards(4);
-                    ChangeColorSpecialCard();
-                    drawCard = false;
+                    if (_start)
+                    {
+                        ChangeColorSpecialCard();
+                    }
                     break;
                 default:
-                    drawCard = false;
                     break;
             }
+
+            drawCard = false;
         }
     }
 }

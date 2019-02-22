@@ -5,7 +5,8 @@ using System.Text;
 
 public class Card
 {
-    public static int DrawStartHand { get { return 7; } }
+    private static int drawStartHand = 7;
+    public static int DrawStartHand { get { return drawStartHand; } set { drawStartHand = value; } }
     private static Random random = new Random();
 
     /// <summary>
@@ -217,6 +218,7 @@ public class Card
     /// <param name="_player">all player</param>
     public static void GiveCards(Stack<Card> _cardDeck, params Player[] _player)
     {
+        // per Card (every Player get one card, the every player get the second card and so on)
         for (int draw = 0; draw < DrawStartHand; draw++)
         {
             for (int player = 0; player < _player.Length; player++)
@@ -260,12 +262,16 @@ public class Player
     private int playerNumber;
     /// <summary>Cards in his hand</summary>
     private List<Card> cardHand = new List<Card>();
+    /// <summary>Player Name</summary>
+    public int winnerRank;
 
     #region Properties
     /// <summary>Player Number</summary>
     public int PlayerNumber { get { return playerNumber; } }
     /// <summary>Cards in his hand</summary>
     public List<Card> CardHand { get { return cardHand; } }
+    /// <summary>Player Name</summary>
+    public string PlayerName { get; set; }
     #endregion
 
     #region Constructor
@@ -276,6 +282,8 @@ public class Player
     public Player(int _playerNumber)
     {
         playerNumber = _playerNumber;
+        PlayerName = "Player " + PlayerNumber;
+        winnerRank = 0;
     }
     /// <summary>
     /// A new Player
@@ -286,6 +294,8 @@ public class Player
     {
         playerNumber = _playerNumber;
         cardHand = _cardHand;
+        PlayerName = "Player " + PlayerNumber;
+        winnerRank = 0;
     }
     #endregion
 
@@ -308,8 +318,14 @@ public class Player
 
     public override string ToString()
     {
-        string s = "Player " + PlayerNumber + " with " + CardHand.Count + " Cards";
-        return s;
+        return PlayerName;
     }
     #endregion
+
+    public string PlayerWithCard()
+    {
+        string s = $"{PlayerName} ({PlayerNumber}) with {CardHand.Count} Cards";
+        return s;
+
+    }
 }
