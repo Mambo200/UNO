@@ -8,6 +8,7 @@ namespace UNO
 {
     class Game
     {
+        private int nextPlayerRank = 1;
         /// <summary>when reverse card was player</summary>
         bool reverse = false;
         public static Card LastPlayedCard;
@@ -40,10 +41,13 @@ namespace UNO
 
             players = new Player[playerCount];
 
-            // generate Player
+            // generate Player and set name
             for (int i = 0; i < players.Length; i++)
             {
+                // new Player
                 players[i] = new Player(i + 1);
+                // set name
+                Helper.SetName(players[i]);
             }
             allCards = Card.GiveDeck(true);
 
@@ -67,7 +71,7 @@ namespace UNO
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Player {0} won!", hasWon.PlayerNumber.ToString());
+                Console.WriteLine("{0} won!", hasWon.PlayerName.ToString());
                 Console.ReadKey();
                 Console.ResetColor();
             }
@@ -91,8 +95,6 @@ namespace UNO
                 // show cards of current player
                 ShowCurrentPlayersCards(true);
 
-                OtherPlayerCardCount();
-
                 // let player choose a card to play
                 ChooseCard();
 
@@ -114,11 +116,11 @@ namespace UNO
             {
                 if (players[i] == currentPlayer)
                 {
-                    message += "Player " + currentPlayer.PlayerNumber + " (You):\t" + currentPlayer.CardHand.Count + "\n";
+                    message += currentPlayer.PlayerName + " (You):\t" + currentPlayer.CardHand.Count + "\n";
                 }
                 else
                 {
-                    message += "Player " + players[i].PlayerNumber + ":\t" + players[i].CardHand.Count + "\n";
+                    message += players[i].PlayerName + ":\t" + players[i].CardHand.Count + "\n";
                 }
             }
             Console.WriteLine(message);
@@ -130,10 +132,9 @@ namespace UNO
         private void ShowCurrentPlayersCards(bool _showDrawACard)
         {
             Console.WriteLine("Press any key...");
-            //Console.ReadKey();
             Console.Clear();
 
-            string s = currentPlayer.ToString() + "\n";
+            string s = currentPlayer.PlayerWithCard() + "\n";
             Console.WriteLine(s);
 
             int count = -1;
@@ -150,6 +151,17 @@ namespace UNO
 
             }
 
+            // show last played card on field
+            ShowLastPlayedCard();
+
+            Console.WriteLine();
+            // show other players card count
+            OtherPlayerCardCount();
+
+        }
+
+        private static void ShowLastPlayedCard()
+        {
             Console.WriteLine("\nOn Field: " + LastPlayedCard + "\n\n");
         }
 
@@ -312,7 +324,8 @@ namespace UNO
         {
             if (currentPlayer.CardHand.Count == 0)
             {
-                inProgress = false;
+                currentPlayer.winnerRank = nextPlayerRank;
+                nextPlayerRank++;
                 hasWon = currentPlayer;
             }
         }

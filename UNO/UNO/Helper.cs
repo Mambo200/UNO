@@ -8,12 +8,51 @@ namespace UNO
 {
     public static class Helper
     {
+        private static int MaxChars { get { return 8; } }
         public static void SetName(Player _player)
         {
-            string name = "";
-            Console.Clear();
-            Console.Write("Name (less or equal 8 characters): ");
-            Console.ReadLine();
+            bool work = false;
+            string newName = "";
+
+            do
+            {
+                do
+                {
+                    // set new name
+                    Console.Clear();
+                    Console.Write(_player.PlayerName + ", choose your Name");
+                    Console.Write("Name (less or equal " + MaxChars + " characters): ");
+                    string input = Console.ReadLine();
+                    newName = GetFirstLetters(input, MaxChars);
+                } while (string.IsNullOrWhiteSpace(newName));
+
+                // check new name
+                Console.WriteLine($"Is {newName} the name you wanted?\nY/N");
+                ConsoleKeyInfo key = Console.ReadKey();
+                if (key.KeyChar == 'y' || key.KeyChar == 'Y')
+                    work = true;
+                else
+                    work = false;
+            } while (!work);
+
+            _player.PlayerName = newName;
+        }
+
+        private static string GetFirstLetters(string _word, int _charCount)
+        {
+            string toReturn = "";
+            int count = 0;
+            foreach (char c in _word)
+            {
+                if (count >= 8)
+                {
+                    break;
+                }
+                count++;
+                toReturn += c;
+            }
+
+            return toReturn;
         }
     }
 }

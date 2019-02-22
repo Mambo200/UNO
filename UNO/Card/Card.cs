@@ -260,12 +260,16 @@ public class Player
     private int playerNumber;
     /// <summary>Cards in his hand</summary>
     private List<Card> cardHand = new List<Card>();
+    /// <summary>Player Name</summary>
+    public int winnerRank;
 
     #region Properties
     /// <summary>Player Number</summary>
     public int PlayerNumber { get { return playerNumber; } }
     /// <summary>Cards in his hand</summary>
     public List<Card> CardHand { get { return cardHand; } }
+    /// <summary>Player Name</summary>
+    public string PlayerName { get; set; }
     #endregion
 
     #region Constructor
@@ -276,6 +280,8 @@ public class Player
     public Player(int _playerNumber)
     {
         playerNumber = _playerNumber;
+        PlayerName = "Player " + PlayerNumber;
+        winnerRank = 0;
     }
     /// <summary>
     /// A new Player
@@ -286,6 +292,8 @@ public class Player
     {
         playerNumber = _playerNumber;
         cardHand = _cardHand;
+        PlayerName = "Player " + PlayerNumber;
+        winnerRank = 0;
     }
     #endregion
 
@@ -308,8 +316,14 @@ public class Player
 
     public override string ToString()
     {
-        string s = "Player " + PlayerNumber + " with " + CardHand.Count + " Cards";
-        return s;
+        return PlayerName;
     }
     #endregion
+
+    public string PlayerWithCard()
+    {
+        string s = $"{PlayerName} ({PlayerNumber}) with {CardHand.Count} Cards";
+        return s;
+
+    }
 }
